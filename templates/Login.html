@@ -1,0 +1,26 @@
+{% extends 'master/master.html' %}
+
+{% block 'title' %} Login Form {% endblock %}
+
+{% block 'body' %}
+<div class="container" style="padding-top: 50px; padding-bottom:50px">
+    {% include 'widgets/message.html' %}
+    <!-- Default form register -->
+<form class="text-center border border-light p-5" action="{% url 'signin' %}" method="POST">
+    {% csrf_token %}
+
+    <p class="h4 mb-4">Login</p>
+
+    <input type="text"  name="username" id="username" class="form-control mb-4" placeholder="Username">
+
+    <!-- Password -->
+    <input type="password" name="password" id="defaultRegisterFormPassword" class="form-control" placeholder="Password" aria-describedby="defaultRegisterFormPasswordHelpBlock">
+
+    <!-- Sign up button -->
+    <button class="btn btn-info my-4 btn-block" type="submit">Login</button>
+
+</form>
+<!-- Default form register -->
+</div>
+
+{% endblock %}
