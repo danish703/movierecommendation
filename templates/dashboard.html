@@ -3,8 +3,44 @@
 {% block 'title' %} User Dashboard {% endblock %}
 
 {% block 'body' %}
-<div class="container" style="padding-top: 50px; padding-bottom:50px">
-<h1>Dashboard</h1>
+
+<div class="container">
+
+        <h3>Recommended for you</h3>
+    <hr/>
+    <div class="row">
+        {% for m in movie %}
+        <div class="col-4">
+            <!-- Card -->
+            <div class="card">
+
+              <!-- Card image -->
+              <div class="view overlay">
+                <img class="card-img-top" src="{{MEDIA_URL}} {{m.image.url}}"
+                  alt="Card image cap" style="height:250px; width: auto">
+                <a href="#!">
+                  <div class="mask rgba-white-slight"></div>
+                </a>
+              </div>
+
+              <!-- Card content -->
+              <div class="card-body">
+                <!-- Title -->
+                <h4 class="card-title">{{m.movie_name}}</h4>
+                  <span>{{m.Genre.title}}</span>
+
+                <p class="card-text">{{m.description}}
+                  </p>
+                <!-- Button -->
+                <a href="{% url 'readmore' m.id %}" class="btn btn-primary">Read More</a>
+
+              </div>
+
+            </div>
+            <!-- Card -->
+        </div>
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock %}

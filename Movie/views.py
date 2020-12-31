@@ -15,12 +15,16 @@ def readmore(request, id):
     else:
         form = RateForm(request.POST)
         if form.is_valid():
-            data = form.save(commit=False)
-            data.user = request.user
-            data.movie_id = id
-            data.save()
-            messages.add_message(request,messages.SUCCESS,"Your rating has been successfully added.")
-            return redirect('readmore', id)
+            try:
+                data = form.save(commit=False)
+                data.user = request.user
+                data.movie_id = id
+                data.save()
+                messages.add_message(request,messages.SUCCESS,"Your rating has been successfully added.")
+                return redirect('readmore', id)
+            except:
+                messages.add_message(request,messages.ERROR,"You already rate this movie")
+                return redirect('readmore',id)
         else:
             messages.add_message(request, messages.ERROR, "An error occurred.")
             return render(request, 'readmore.html', {'rateform':form})

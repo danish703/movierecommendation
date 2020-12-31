@@ -11,8 +11,6 @@ from rate.forms import RateForm
 def home(request):
     allmovies = Movie.objects.all()
     genre= Genre.objects.all()
-    p = PrePareData(13)
-    print(p.calcuatePearsonCoffiecient().items())
     context = {
         'movies' :allmovies,
         'genre':genre
@@ -49,7 +47,13 @@ def signup(request):
 
 @login_required(login_url='signin')
 def dashboard(request):
-    return render(request,'dashboard.html')
+    p = PrePareData(request.user.id)
+    df = p.recommendMovie()
+    movie_id = df['movieId'].tolist()
+    context = {
+        'movie':Movie.objects.filter(id__in=movie_id)
+    }
+    return render(request,'dashboard.html',context)
 
 def signin(request):
     if request.method=='GET':

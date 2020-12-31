@@ -78,4 +78,27 @@ class PrePareData:
 
             return pd.DataFrame.from_dict(pearsonCorDict, orient='index')
 
+    def similearityIndex(self):
+        pearsonDF = self.calcuatePearsonCoffiecient()
+        pearsonDF.columns = ['similarityIndex']
+        pearsonDF['userid'] = pearsonDF.index
+        pearsonDF.index = range(len(pearsonDF))
+        return pearsonDF
+
+    def recommendMovie(self):
+        pearsonDF = self.similearityIndex()
+        topUsers = pearsonDF.sort_values(by='similarityIndex', ascending=False)[0:50]
+        topUsersRating = topUsers.merge(self.readData(), left_on='userid', right_on='userid', how='inner')
+        topUsersRating['weightedRating'] = topUsersRating['similarityIndex'] * topUsersRating['rate']
+        tempTopUsersRating = topUsersRating.groupby('movieid').sum()[['similarityIndex', 'weightedRating']]
+        tempTopUsersRating.columns = ['sum_similarityIndex', 'sum_weightedRating']
+        recommendation_df = pd.DataFrame()
+        recommendation_df['weighted average recommendation score'] \
+            = tempTopUsersRating['sum_weightedRating']/tempTopUsersRating['sum_similarityIndex']
+        recommendation_df['movieId'] = tempTopUsersRating.index
+        print(recommendation_df)
+        return recommendation_df
+
+
+
 
