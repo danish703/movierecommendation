@@ -50,6 +50,7 @@ class PrePareData:
         users = allDataset[allDataset['movieid'].isin(userDataset['movieid'].tolist())]
         userSubsetGroup = users.groupby(['userid'])
         userSubsetGroup = sorted(userSubsetGroup, key=lambda x: len(x[1]), reverse=True)
+
         return userSubsetGroup
 
     def calcuatePearsonCoffiecient(self):
@@ -75,8 +76,7 @@ class PrePareData:
                 pearsonCorDict[name] = Sxy / sqrt(Sxx * Syy)
             else:
                 pearsonCorDict[name] = 0
-
-            return pd.DataFrame.from_dict(pearsonCorDict, orient='index')
+        return pd.DataFrame.from_dict(pearsonCorDict, orient='index')
 
     def similearityIndex(self):
         pearsonDF = self.calcuatePearsonCoffiecient()
@@ -96,9 +96,12 @@ class PrePareData:
         recommendation_df['weighted average recommendation score'] \
             = tempTopUsersRating['sum_weightedRating']/tempTopUsersRating['sum_similarityIndex']
         recommendation_df['movieId'] = tempTopUsersRating.index
-        print(recommendation_df)
         return recommendation_df
 
+    def getSimilarUserWithSimilarPercentage(self):
+        similaruser = self.similearityIndex()
+        topUser = similaruser.sort_values(by='similarityIndex',ascending=False)[0:10]
+        return topUser
 
 
 

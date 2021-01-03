@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from .views import home, about,signin, signup, dashboard, signout
+from .views import home, about,signin, signup, dashboard, signout,similaruser
 from django.conf import settings
 from django.conf.urls.static import static
 urlpatterns = [
@@ -25,7 +25,9 @@ urlpatterns = [
     path('SignUp/',signup, name='signup'),
     path('Login/',signin, name='signin'),
     path('dashboard/',dashboard, name='dashboard'),
+    path('similaruser/',similaruser, name='similaruser'),
     path('logout/', signout, name='signout'),
     path('movie/',include('Movie.urls')),
+
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

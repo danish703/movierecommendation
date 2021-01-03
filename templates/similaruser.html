@@ -1,0 +1,33 @@
+{% extends 'master/master.html' %}
+
+{% block 'title' %} User Dashboard {% endblock %}
+
+{% block 'body' %}
+
+<div class="container">
+
+        <h3>Similar User</h3>
+    <hr/>
+    <div class="row">
+        {% for p,u in user %}
+          <div class="col-4">
+            <!-- Card -->
+            <div class="card">
+
+
+              <!-- Card content -->
+              <div class="card-body">
+                <!-- Title -->
+                <h4 class="card-title">{{u.username}}</h4>
+                  <span>{{p}}%</span>
+
+              </div>
+
+            </div>
+            <!-- Card -->
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

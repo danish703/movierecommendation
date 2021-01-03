@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import login_required
 from Movie.models import Movie,Genre
 from recommendation.datapreparation import PrePareData
 from rate.forms import RateForm
+import math
+
 #from .ratecalc import average
 def home(request):
     allmovies = Movie.objects.all()
@@ -47,13 +49,27 @@ def signup(request):
 
 @login_required(login_url='signin')
 def dashboard(request):
-    p = PrePareData(request.user.id)
+    p = PrePareData(13)
     df = p.recommendMovie()
     movie_id = df['movieId'].tolist()
     context = {
         'movie':Movie.objects.filter(id__in=movie_id)
     }
     return render(request,'dashboard.html',context)
+
+@login_required(login_url='signin')
+def similaruser(request):
+    p = PrePareData(13)
+    df = p.getSimilarUserWithSimilarPercentage()
+    similarityPercentage = df['similarityIndex'].tolist()[1:]
+    userids = df['userid'].tolist()[1:]
+    similarityPercentage = [math.floor(e *100) for e in similarityPercentage]
+    users = User.objects.filter(id__in=userids)
+    context = {
+        'user':zip(similarityPercentage,users)
+    }
+    return render(request,'similaruser.html',context)
+
 
 def signin(request):
     if request.method=='GET':
