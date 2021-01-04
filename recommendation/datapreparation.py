@@ -76,7 +76,7 @@ class PrePareData:
                 pearsonCorDict[name] = Sxy / sqrt(Sxx * Syy)
             else:
                 pearsonCorDict[name] = 0
-        return pd.DataFrame.from_dict(pearsonCorDict, orient='index')
+            return pd.DataFrame.from_dict(pearsonCorDict, orient='index')
 
     def similearityIndex(self):
         pearsonDF = self.calcuatePearsonCoffiecient()

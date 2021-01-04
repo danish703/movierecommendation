@@ -1,6 +1,7 @@
 from django.db import models
 # Create your models here.
 from django.db.models import Sum,Count
+from django.contrib.auth.models import User
 class Genre(models.Model):
     title = models.CharField(max_length=100)
     def __str__(self):
@@ -27,3 +28,13 @@ class Movie(models.Model):
         else:
             avg = int(sum['rating__sum'] / c['rating__count'])
         return avg
+
+class  WatchList(models.Model):
+    movie = models.ForeignKey(Movie,on_delete=models.CASCADE)
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.movie)
+
+    class Meta:
+        unique_together = ('movie','user')

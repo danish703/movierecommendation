@@ -8,7 +8,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class Rate(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    rating = models.PositiveIntegerField(validators=[MaxValueValidator(4),MinValueValidator(1)])
+    rating = models.PositiveIntegerField(validators=[MaxValueValidator(4),MinValueValidator(1)],default=2)
 
     class Meta:
         unique_together=('movie','user')

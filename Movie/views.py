@@ -2,7 +2,9 @@ from django.shortcuts import render,redirect
 from .models import Movie,Genre
 from rate.forms import RateForm
 from django.contrib import messages
-
+from .models import WatchList
+from rate.models import Rate
+from django.contrib.auth.decorators import login_required
 def readmore(request, id):
     if request.method=='GET':
         a = Movie.objects.get(pk=id)
@@ -37,3 +39,34 @@ def genereMovieList(request,cid):
          'movies':Movie.objects.filter(Genre=genre)
     }
     return render(request,'genremovies.html',context)
+
+@login_required(login_url='signin')
+def addToWatchList(request,movieid):
+    try:
+        a = WatchList(movie_id=movieid,user_id=request.user.id)
+        a.save()
+        messages.add_message(request,messages.SUCCESS,"successfully added to watchlist")
+        return redirect('dashboard')
+    except:
+        messages.add_message(request,messages.ERROR,"already added to watchlist")
+        return redirect('dashboard')
+
+
+
+@login_required(login_url='signin')
+def myWatchList(request):
+    a = WatchList.objects.filter(user=request.user)
+    watchlist_movie_id = []
+    for x in a:
+        watchlist_movie_id.append(x.movie_id)
+    context = {
+        'movies':Movie.objects.filter(id__in=watchlist_movie_id)
+    }
+    return render(request,'watchlist.html',context)
+
+def rateHistory(request):
+    x = Rate.objects.filter(user = request.user)
+    context = {
+        'rate':x
+    }
+    return render(request,'history.html',context)

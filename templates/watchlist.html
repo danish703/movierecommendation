@@ -1,17 +1,16 @@
 {% extends 'master/master.html' %}
 
-{% block 'title' %} User Dashboard {% endblock %}
+{% block 'title' %} My Watch List {% endblock %}
 
 {% block 'body' %}
 
 <div class="container">
 {% include 'widgets/message.html' %}
-    <a href="#">Similar user</a> | <a href="{% url 'mywatchlist' %}">My WatchList</a> |
-    <a href="{% url 'ratehistory' %}">History</a>
-        <h3>Rate History</h3>
+    <a href="#">Similar user</a> | <a href="{% url 'mywatchlist' %}">My WatchList</a>
+        <h3>Recommended for you</h3>
     <hr/>
     <div class="row">
-        {% for m in movie %}
+        {% for m in movies %}
         <div class="col-4">
             <!-- Card -->
             <div class="card">
